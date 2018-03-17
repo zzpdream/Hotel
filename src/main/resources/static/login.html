@@ -20,7 +20,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">用户名</label>
             <div class="layui-input-block" style="margin-right: 40px">
-                <input type="text" name="username" required  lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                <input type="text" name="name" required  lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
@@ -51,17 +51,21 @@
         //监听提交
         form.on('submit(formDemo)', function(senddata){
             // layer.msg(JSON.stringify(senddata.field));
+            layer.load(1);
                 $.post({
                 url: '/login',
                     data:senddata.field,
+                    dataType:"json",
                     success: function(data) {
                     if (data.code == 0) {
-                        layer.msg(JSON.stringify(data.data));
+                        layer.msg(data.msg,{icon: 1});
+//                        layer.msg(JSON.stringify(data.data));
 //                         location.href = data.redirectUrl;
                         location.replace("main.html")
                     } else {
-                        Dialog.danger(data.msg);
-                        $loginBtn.button("reset");
+                        layer.closeAll('loading');
+                        layer.msg(data.msg,{icon: 2});
+//                        $loginBtn.button("reset");
                     }
                 }
             });
