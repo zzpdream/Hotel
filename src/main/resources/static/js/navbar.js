@@ -1,79 +1,220 @@
-/** kit_admin-v1.0.4 MIT License By http://kit/zhengjinfan.cn */
-;layui.define(["layer", "laytpl", "element"], function (i) {
-    var e = layui.jquery, a = layui.layer, t = (e(window), e(document)), n = layui.laytpl, l = layui.element;
-    i("navbar", {
-        v: "1.0.2",
-        config: {
-            data: void 0,
-            remote: {url: void 0, type: "GET", jsonp: !1},
-            cached: !1,
-            elem: void 0,
-            filter: "kitNavbar"
-        },
-        set: function (i) {
-            var a = this;
-            return a.config.data = void 0, e.extend(!0, a.config, i), a
-        },
-        hasElem: function () {
-            var i = this.config;
-            return void 0 !== i.elem || 0 !== t.find("ul[kit-navbar]").length || !e(i.elem) || (layui.hint().error("Navbar error:请配置Navbar容器."), !1)
-        },
-        getElem: function () {
-            var i = this.config;
-            return void 0 !== i.elem && e(i.elem).length > 0 ? e(i.elem) : t.find("ul[kit-navbar]")
-        },
-        bind: function (i) {
-            var n = this;
-            n.config;
-            return n.hasElem() ? (n.getElem().find("a[kit-target]").each(function () {
-                var t = e(this), n = void 0;
-                t.hover(function () {
-                    n = a.tips(e(this).children("span").text(), this)
-                }, function () {
-                    n && a.close(n)
-                }), t.off("click").on("click", function () {
-                    var e, a = t.data("options");
-                    if (void 0 !== a) try {
-                        e = new Function("return " + a)()
-                    } catch (i) {
-                        layui.hint().error("Navbar 组件a[data-options]配置项存在语法错误：" + a)
-                    } else e = {icon: t.data("icon"), id: t.data("id"), title: t.data("title"), url: t.data("url")};
-                    "function" == typeof i && i(e)
-                })
-            }), e(".kit-side-fold").off("click").on("click", function () {
-                var i = t.find("div.kit-side");
-                i.hasClass("kit-sided") ? (i.removeClass("kit-sided"), i.find("li.layui-nav-item").removeClass("kit-side-folded"), i.find("dd").removeClass("kit-side-folded"), t.find("div.layui-body").removeClass("kit-body-folded"), t.find("div.layui-footer").removeClass("kit-footer-folded")) : (i.addClass("kit-sided"), i.find("li.layui-nav-item").addClass("kit-side-folded"), i.find("dd").addClass("kit-side-folded"), t.find("div.layui-body").addClass("kit-body-folded"), t.find("div.layui-footer").addClass("kit-footer-folded"))
-            }), n) : n
-        },
-        render: function (i) {
-            var t = this, d = t.config, o = d.remote,
-                r = ["{{# layui.each(d,function(index, item){ }}", "{{# if(item.spread){ }}", '<li class="layui-nav-item layui-nav-itemed">', "{{# }else{ }}", '<li class="layui-nav-item">', "{{# } }}", "{{# var hasChildren = item.children!==undefined && item.children.length>0; }}", "{{# if(hasChildren){ }}", '<a href="javascript:;">', '{{# if (item.icon.indexOf("fa-") !== -1) { }}', '<i class="fa {{item.icon}}" aria-hidden="true"></i>', "{{# } else { }}", '<i class="layui-icon">{{item.icon}}</i>', "{{# } }}", "<span> {{item.title}}</span>", "</a>", "{{# var children = item.children; }}", '<dl class="layui-nav-child">', "{{# layui.each(children,function(childIndex, child){ }}", "<dd>", "<a href=\"javascript:;\" kit-target data-options=\"{url:'{{child.url}}',icon:'{{child.icon}}',title:'{{child.title}}',id:'{{child.id}}'}\">", '{{# if (child.icon.indexOf("fa-") !== -1) { }}', '<i class="fa {{child.icon}}" aria-hidden="true"></i>', "{{# } else { }}", '<i class="layui-icon">{{child.icon}}</i>', "{{# } }}", "<span> {{child.title}}</span>", "</a>", "</dd>", "{{# }); }}", "</dl>", "{{# }else{ }}", "<a href=\"javascript:;\" kit-target data-options=\"{url:'{{item.url}}',icon:'{{item.icon}}',title:'{{item.title}}',id:'{{item.id}}'}\">", '{{# if (item.icon.indexOf("fa-") !== -1) { }}', '<i class="fa {{item.icon}}" aria-hidden="true"></i>', "{{# } else { }}", '<i class="layui-icon">{{item.icon}}</i>', "{{# } }}", "<span> {{item.title}}</span>", "</a>", "{{# } }}", "</li>", "{{# }); }}"],
-                s = [], c = a.load(2);
-            if (!t.hasElem()) return t;
-            var f = t.getElem();
-            if (void 0 !== d.data && d.data.length > 0) s = d.data; else {
-                o.jsonp;
-                var u = {
-                    url: o.url, type: o.type, error: function (i, e, a) {
-                        layui.hint().error("Navbar error:AJAX请求出错." + a)
-                    }, success: function (i) {
-                        s = i
-                    }
-                };
-                e.extend(!0, u, o.jsonp ? {
-                    dataType: "jsonp",
-                    jsonp: "callback",
-                    jsonpCallback: "jsonpCallback"
-                } : {dataType: "json"}), e.support.cors = !0, e.ajax(u)
-            }
-            var h = setInterval(function () {
-                s.length > 0 && (clearInterval(h), n(r.join("")).render(s, function (e) {
-                    f.html(e), l.init(), t.bind(function (e) {
-                        "function" == typeof i && i(e)
-                    }), c && a.close(c)
-                }))
-            }, 50);
-            return t
+/**
+ * Name:navbar.js
+ * Author:Van
+ * E-mail:zheng_jinfan@126.com
+ * Website:http://kit.zhengjinfan.cn/
+ * LICENSE:MIT
+ */
+layui.define(['layer', 'laytpl', 'element'], function(exports) {
+  var $ = layui.jquery,
+    layer = layui.layer,
+    _modName = 'navbar',
+    _win = $(window),
+    _doc = $(document),
+    laytpl = layui.laytpl,
+    element = layui.element;
+
+  var navbar = {
+    v: '1.0.5',
+    config: {
+      data: undefined, //静态数据
+      remote: {
+        url: undefined, //接口地址
+        type: 'GET', //请求方式
+        jsonp: false //跨域
+      },
+      cached: false, //是否缓存
+      elem: undefined, //容器
+      filter: 'kitNavbar' //过滤器名称
+    },
+    set: function(options) {
+      var that = this;
+      that.config.data = undefined;
+      $.extend(true, that.config, options);
+      return that;
+    },
+    /**
+     * 是否已设置了elem
+     */
+    hasElem: function() {
+      var that = this,
+        _config = that.config;
+      if (_config.elem === undefined && _doc.find('ul[kit-navbar]').length === 0 && $(_config.elem)) {
+        layui.hint().error('Navbar error:请配置Navbar容器.');
+        return false;
+      }
+      return true;
+    },
+    /**
+     * 获取容器的jq对象
+     */
+    getElem: function() {
+      var _config = this.config;
+      return (_config.elem !== undefined && $(_config.elem).length > 0) ? $(_config.elem) : _doc.find('ul[kit-navbar]');
+    },
+    /**
+     * 绑定特定a标签的点击事件
+     */
+    bind: function(callback, params) {
+      var that = this,
+        _config = that.config;
+      var defaults = {
+        target: undefined,
+        showTips: true
+      };
+      $.extend(true, defaults, params);
+      var _target = defaults.target === undefined ? _doc : $(defaults.target);
+      // if (!that.hasElem())
+      //     return that;
+      // var _elem = that.getElem();
+
+      _target.find('a[kit-target]').each(function() {
+        var _that = $(this),
+          tipsId = undefined;
+        if (defaults.showTips) {
+          _that.hover(function() {
+            if (_that.parents('.kit-sided').length > 0)
+              tipsId = layer.tips($(this).children('span').text(), this);
+          }, function() {
+            if (tipsId)
+              layer.close(tipsId);
+          });
         }
-    })
+        _that.off('click').on('click', function() {
+          var options = _that.data('options');
+          var data;
+          if (options !== undefined) {
+            try {
+              data = new Function('return ' + options)();
+            } catch (e) {
+              layui.hint().error('Navbar 组件a[data-options]配置项存在语法错误：' + options)
+            }
+          } else {
+            data = {
+              icon: _that.data('icon'),
+              id: _that.data('id'),
+              title: _that.data('title'),
+              url: _that.data('url'),
+            };
+          }
+          typeof callback === 'function' && callback(data);
+        });
+      });
+      $('.kit-side-fold').off('click').on('click', function() {
+        var _side = _doc.find('div.kit-side');
+        if (_side.hasClass('kit-sided')) {
+          _side.removeClass('kit-sided');
+          _doc.find('div.layui-body').removeClass('kit-body-folded');
+          _doc.find('div.layui-footer').removeClass('kit-footer-folded');
+        } else {
+          _side.addClass('kit-sided');
+          _doc.find('div.layui-body').addClass('kit-body-folded');
+          _doc.find('div.layui-footer').addClass('kit-footer-folded');
+        }
+      });
+      return that;
+    },
+    /**
+     * 渲染navbar
+     */
+    render: function(callback) {
+      var that = this,
+        _config = that.config, //配置
+        _remote = _config.remote, //远程参数配置
+        _tpl = [
+          '{{# layui.each(d,function(index, item){ }}',
+          '{{# if(item.spread){ }}',
+          '<li class="layui-nav-item layui-nav-itemed">',
+          '{{# }else{ }}',
+          '<li class="layui-nav-item">',
+          '{{# } }}',
+          '{{# var hasChildren = item.children!==undefined && item.children.length>0; }}',
+          '{{# if(hasChildren){ }}',
+          '<a href="javascript:;">',
+          '{{# if (item.icon.indexOf("fa-") !== -1) { }}',
+          '<i class="fa {{item.icon}}" aria-hidden="true"></i>',
+          '{{# } else { }}',
+          '<i class="layui-icon">{{item.icon}}</i>',
+          '{{# } }}',
+          '<span> {{item.title}}</span>',
+          '</a>',
+          '{{# var children = item.children; }}',
+          '<dl class="layui-nav-child">',
+          '{{# layui.each(children,function(childIndex, child){ }}',
+          '<dd>',
+          '<a href="javascript:;" kit-target data-options="{url:\'{{child.url}}\',icon:\'{{child.icon}}\',title:\'{{child.title}}\',id:\'{{child.id}}\'}">',
+          '{{# if (child.icon.indexOf("fa-") !== -1) { }}',
+          '<i class="fa {{child.icon}}" aria-hidden="true"></i>',
+          '{{# } else { }}',
+          '<i class="layui-icon">{{child.icon}}</i>',
+          '{{# } }}',
+          '<span> {{child.title}}</span>',
+          '</a>',
+          '</dd>',
+          '{{# }); }}',
+          '</dl>',
+          '{{# }else{ }}',
+          '<a href="javascript:;" kit-target data-options="{url:\'{{item.url}}\',icon:\'{{item.icon}}\',title:\'{{item.title}}\',id:\'{{item.id}}\'}">',
+          '{{# if (item.icon.indexOf("fa-") !== -1) { }}',
+          '<i class="fa {{item.icon}}" aria-hidden="true"></i>',
+          '{{# } else { }}',
+          '<i class="layui-icon">{{item.icon}}</i>',
+          '{{# } }}',
+          '<span> {{item.title}}</span>',
+          '</a>',
+          '{{# } }}',
+          '</li>',
+          '{{# }); }}',
+        ], //模板
+        _data = [];
+      var navbarLoadIndex = layer.load(2);
+      if (!that.hasElem())
+        return that;
+      var _elem = that.getElem();
+      //本地数据优先
+      if (_config.data !== undefined && _config.data.length > 0) {
+        _data = _config.data;
+      } else {
+        var dataType = _remote.jsonp ? 'jsonp' : 'json';
+        var options = {
+          url: _remote.url,
+          type: _remote.type,
+          error: function(xhr, status, thrown) {
+            layui.hint().error('Navbar error:AJAX请求出错.' + thrown);
+            navbarLoadIndex && layer.close(navbarLoadIndex);
+          },
+          success: function(res) {
+            _data = res;
+          }
+        };
+        $.extend(true, options, _remote.jsonp ? {
+          dataType: 'jsonp',
+          jsonp: 'callback',
+          jsonpCallback: 'jsonpCallback'
+        } : {
+          dataType: 'json'
+        });
+        $.support.cors = true;
+        $.ajax(options);
+      }
+      var tIndex = setInterval(function() {
+        if (_data.length > 0) {
+          clearInterval(tIndex);
+          //渲染模板
+          laytpl(_tpl.join('')).render(_data, function(html) {
+            _elem.html(html);
+            element.init();
+            //绑定a标签的点击事件
+            that.bind(function(data) {
+              typeof callback === 'function' && callback(data);
+            });
+            //关闭等待层
+            navbarLoadIndex && layer.close(navbarLoadIndex);
+          });
+        }
+      }, 50);
+      return that;
+    }
+  };
+  exports(_modName, navbar);
 });

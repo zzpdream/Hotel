@@ -1,24 +1,59 @@
-/** kit_admin-v1.0.4 MIT License By http://kit/zhengjinfan.cn */
-;layui.define(["jquery"], function (i) {
-    var s = layui.jquery, e = (s(document), s("body")), a = {
-        v: "1.0.0", times: 1, _message: function () {
-            var i = s(".kit-message");
-            return i.length > 0 ? i : (e.append('<div class="kit-message"></div>'), s(".kit-message"))
-        }, show: function (i) {
-            var e = this, a = e._message(), t = e.times, n = void 0 === (i = i || {}).skin ? "default" : i.skin,
-                d = void 0 === i.msg ? "请输入一些提示信息!" : i.msg, m = void 0 === i.autoClose || i.autoClose,
-                u = ['<div class="kit-message-item layui-anim layui-anim-upbit" data-times="' + t + '">', '<div class="kit-message-body kit-skin-' + n + '">', d, "</div>", '<div class="kit-close kit-skin-' + n + '"><i class="fa fa-times" aria-hidden="true"></i></div>', "</div>"];
-            a.append(u.join(""));
-            var o = a.children("div[data-times=" + t + "]").find("i.fa-times");
-            o.off("click").on("click", function () {
-                var i = s(this).parents("div.kit-message-item").removeClass("layui-anim-upbit").addClass("layui-anim-fadeout");
-                setTimeout(function () {
-                    i.remove()
-                }, 1e3)
-            }), m && setTimeout(function () {
-                o.click()
-            }, 3e3), e.times++
+/**
+ * Name:message.js
+ * Author:Van
+ * E-mail:zheng_jinfan@126.com
+ * Website:http://kit.zhengjinfan.cn/
+ * LICENSE:MIT
+ */
+layui.define(['jquery', 'kitconfig'], function(exports) {
+    var $ = layui.jquery,
+        kitconfig = layui.kitconfig,
+        _modName = 'message',
+        _doc = $(document),
+        _body = $('body'),
+        _MESSAGE = '.kit-message';
+    var message = {
+        v: '1.0.0',
+        times: 1,
+        _message: function() {
+            var _msg = $(_MESSAGE);
+            if (_msg.length > 0)
+                return _msg;
+            _body.append('<div class="kit-message"></div>');
+            return $(_MESSAGE);
+        },
+        show: function(options) {
+            var that = this,
+                _message = that._message(),
+                id = that.times,
+                options = options || {},
+                skin = options.skin === undefined ? 'default' : options.skin,
+                msg = options.msg === undefined ? '请输入一些提示信息!' : options.msg,
+                autoClose = options.autoClose === undefined ? true : options.autoClose;
+            var tpl = [
+                '<div class="kit-message-item layui-anim layui-anim-upbit" data-times="' + id + '">',
+                '<div class="kit-message-body kit-skin-' + skin + '">',
+                msg,
+                '</div>',
+                '<div class="kit-close kit-skin-' + skin + '"><i class="fa fa-times" aria-hidden="true"></i></div>',
+                '</div>'
+            ];
+            _message.append(tpl.join(''));
+            var _times = _message.children('div[data-times=' + id + ']').find('i.fa-times');
+            _times.off('click').on('click', function() {
+                var _t = $(this).parents('div.kit-message-item').removeClass('layui-anim-upbit').addClass('layui-anim-fadeout');
+                setTimeout(function() {
+                    _t.remove();
+                }, 1000);
+            });
+            if (autoClose) { //是否自动关闭
+                setTimeout(function() {
+                    _times.click();
+                }, 3000);
+            }
+            that.times++;
         }
     };
-    layui.link("./build/css/message.css"), i("message", a)
+    layui.link(kitconfig.resourcePath + 'css/message.css');
+    exports('message', message);
 });

@@ -1,18 +1,38 @@
-/** kit_admin-v1.0.4 MIT License By http://kit/zhengjinfan.cn */
-;layui.define(["jquery", "nprogress"], function (o) {
-    var e = layui.jquery;
-    o("loader", {
-        version: "1.0.1", load: function (o) {
+/**
+ * Name:loader.js
+ * Author:Van
+ * E-mail:zheng_jinfan@126.com
+ * Website:http://kit.zhengjinfan.cn/
+ * LICENSE:MIT
+ */
+layui.define(['jquery', 'nprogress'], function(exports) {
+    var $ = layui.jquery,
+        _modName = 'loader';
+
+    var loader = {
+        version: '1.0.1',
+        load: function(options) {
             NProgress.start();
-            var n = o.url, r = o.name, t = o.id, i = e(void 0 !== o.elem ? o.elem : "#container");
-            i.load(n, function (e, n, c) {
-                "error" === n && "function" == typeof o.onError && o.onError(), "success" === n && (i.html(e), "function" == typeof o.onSuccess && o.onSuccess({
-                    name: r,
-                    id: t
-                })), "function" == typeof o.onComplate && o.onComplate(), NProgress.done()
-            })
-        }, getScript: function (o, n) {
-            e.getScript(o, n)
+            var url = options.url,
+                name = options.name,
+                id = options.id,
+                _elem = options.elem !== undefined ? $(options.elem) : $('#container');
+            _elem.load(url, function(res, status, xhr) {
+                if (status === "error" && typeof options.onError === 'function') {
+                    options.onError();
+                }
+                if (status === 'success') {
+                    _elem.html(res);
+                    typeof options.onSuccess === 'function' && options.onSuccess({ name: name, id: id });
+                }
+                typeof options.onComplate === 'function' && options.onComplate();
+                NProgress.done();
+            });
+        },
+        //动态加载script
+        getScript: function(url, callback) {
+            $.getScript(url, callback);
         }
-    })
+    };
+    exports('loader', loader);
 });
