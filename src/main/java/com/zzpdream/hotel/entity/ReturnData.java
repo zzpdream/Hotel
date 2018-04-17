@@ -7,6 +7,7 @@ public class ReturnData<T> {
     public int code;
     public String msg;
     public T data;
+    public int count;
 
     public ReturnData(int code, String msg, T data) {
         this.code = code;
