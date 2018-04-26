@@ -29,10 +29,9 @@
 <script src="../plugins/layui/layui.js"></script>
 <script src="../js/app.js"></script>
 <script>
-    layui.extend({
-        admin: '../js/admin'
-    });
-    layui.use(['laydate', 'jquery', 'admin','table'], function () {
+    layui.config({
+        base: '../js/'
+    }).use(['laydate', 'jquery', 'admin','table'], function () {
         var laydate = layui.laydate,
             $ = layui.jquery,
             admin = layui.admin;
