@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>添加角色</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="../plugins/layui/css/layui.css">
+    <link rel="stylesheet" href="../css/app.css">
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div style="padding: 20px">
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <label for="rolename" class="layui-form-label">
+                <span class="we-red">*</span>角色名
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="rolename" name="rolename" required="" lay-verify="required"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="rolename" class="layui-form-label"></label>
+            <button  class="layui-btn" lay-filter="add" lay-submit="">增加</button>
+        </div>
+    </form>
+</div>
+<script src="../plugins/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript">
+    layui.use(['form','layer'], function(){
+        var form = layui.form,
+            layer = layui.layer;
+        $ = layui.jquery;
+        form.render();
+
+        //监听提交
+        form.on('submit(add)', function(senddata){
+            console.log(senddata);
+            //发异步，把数据提交后台
+            layer.load(1);
+
+            var timeout=setTimeout(function(){
+                    layer.closeAll('loading');
+                    layer.msg("请求超时");
+                },
+                5000 //超时时间，考虑到网络问题，5秒还是比较合理的
+            );
+
+            $.post({
+                url: '/role/add_role',
+                data:senddata.field,
+                dataType:"json",
+                if(timeout){
+                    clearTimeout(timeout);
+                    timeout=null;
+                },
+                success: function(data) {
+                    clearTimeout(timeout);
+                    timeout=null;
+                    if (data.code == 0) {
+                        layer.alert("增加成功", {icon: 6},function () {
+                            // 获得frame索引
+                            var index = parent.layer.getFrameIndex(window.name);
+                            //关闭当前frame
+                            parent.layer.close(index);
+                            parent.test.reload();
+
+                        });
+                    } else {
+                        layer.closeAll('loading');
+                        layer.msg(data.msg,{icon: 2});
+                    }
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+
+</html>

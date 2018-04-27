@@ -18,6 +18,13 @@ public class Role implements Serializable {
     @Column(length = 100)
     private String name;
 
+    public Role() {
+    }
+
+    public Role(String name) {
+        this.name = name;
+    }
+
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
     private Set<User> users=new HashSet<>();
