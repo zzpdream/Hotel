@@ -10,63 +10,56 @@
 
 <body>
 <div class="weadmin-block">
-    <button  class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-    <button  class="layui-btn" onclick="WeAdminShow('添加角色','./add_role.html')"><i class="layui-icon"></i>添加</button>
+    <button  class="layui-btn layui-btn-danger" id="delete"><i class="layui-icon"></i>批量删除</button>
+    <button  class="layui-btn" id="addBtn"><i class="layui-icon"></i>添加</button>
 </div>
 
-<table class="layui-table" lay-data="{height:315, url:'/role/findAll', page:true, id:'test',height: 'full-65'}" lay-filter="test" id="test">
-    <thead>
-    <tr>
-        <th lay-data="{checkbox:true}"></th>
-        <th lay-data="{field:'id', width:80, sort: true}">ID</th>
-        <th lay-data="{field:'name', width:280}">角色名</th>
-    </tr>
-    </thead>
-</table>
+<table class="layui-hide" id="test"></table>
+
+<!-- 表单弹窗 -->
+<script type="text/html" id="addModel">
+    <div style="padding: 20px">
+        <form class="layui-form" id="editForm">
+            <div class="layui-form-item">
+                <label for="rolename" class="layui-form-label">
+                    <span class="we-red">*</span>角色名
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="rolename" name="rolename" required="" lay-verify="required"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="rolename" class="layui-form-label"></label>
+                <button  class="layui-btn" lay-filter="add" lay-submit="">增加</button>
+            </div>
+        </form>
+    </div>
+
+</script>
 
 <script src="../plugins/layui/layui.js"></script>
-<script src="../js/app.js"></script>
-<script>
-    layui.config({
-        base: '../js/'
-    }).use(['laydate', 'jquery', 'admin','table'], function () {
-        var laydate = layui.laydate,
-            $ = layui.jquery,
-            admin = layui.admin;
-        //执行一个laydate实例
-        laydate.render({
-            elem: '#start' //指定元素
-        });
-        //执行一个laydate实例
-        laydate.render({
-            elem: '#end' //指定元素
-        });
+<script src="../js/role.js"></script>
+<!--<script>-->
+    <!--layui.config({-->
+        <!--base: '../js/'-->
+    <!--}).use(['laydate', 'jquery', 'admin','table','role'], function () {-->
+        <!--var laydate = layui.laydate,-->
+            <!--$ = layui.jquery,-->
+            <!--admin = layui.admin;-->
 
-
-        /*用户-删除*/
-        function member_del(obj, id) {
-            layer.confirm('确认要删除吗？', function (index) {
-                //发异步删除数据
-                $(obj).parents("tr").remove();
-                layer.msg('已删除!', {
-                    icon: 1,
-                    time: 1000
-                });
-            });
-        }
-
-        window.delAll=function delAll(argument) {
-            var data = tableCheck.getData();
-            layer.confirm('确认要删除吗？' + data, function (index) {
-                //捉到所有被选中的，发异步进行删除
-                layer.msg('删除成功', {
-                    icon: 1
-                });
-                $(".layui-form-checked").not('.header').parents('tr').remove();
-            });
-        }
-    });
-</script>
+        <!--window.delAll=function delAll(argument) {-->
+            <!--var data = tableCheck.getData();-->
+            <!--layer.confirm('确认要删除吗？' + data, function (index) {-->
+                <!--//捉到所有被选中的，发异步进行删除-->
+                <!--layer.msg('删除成功', {-->
+                    <!--icon: 1-->
+                <!--});-->
+                <!--$(".layui-form-checked").not('.header').parents('tr').remove();-->
+            <!--});-->
+        <!--}-->
+    <!--});-->
+<!--</script>-->
 </body>
 
 </html>
