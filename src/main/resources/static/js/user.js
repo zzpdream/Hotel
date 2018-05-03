@@ -7,24 +7,25 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
     $(function () {
         //渲染表格
         table.render({
-            elem: '#test',
-            url: '/role/findAll',
+            elem: '#users',
+            url: '/user/findAll',
             page: false,
             cols: [[
                 {type: 'checkbox'},
-                {type: 'numbers', width : 100, sort: true, title: '编号'},
-                // {field: 'id', minWidth : 280, sort: true, title: '角色名'},
-                {field: 'name', minWidth : 280, sort: true, title: '角色名'}
+                {field: 'id', minWidth : 100, sort: true, title: 'ID'},
+                {field: 'name', minWidth : 280, sort: true, title: '用户名'},
+                {field: 'tel', minWidth : 280, sort: true, title: '电话'},
+                {field: 'rolename', minWidth : 280, sort: true, title: '角色'}
             ]]
         });
     });
 
     //添加按钮点击事件
-    $("#addBtn").click(function(){
+    $("#addUserBtn").click(function(){
         showEditModel(null);
     });
 
-    //添加按钮点击事件
+    //删除
     $("#delete").click(function(){
         var checkStatus = table.checkStatus('test')
             ,data = checkStatus.data;
@@ -55,21 +56,36 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
     function showEditModel(data) {
         layer.open({
             type: 1,
-            title: data == null ? "添加角色" : "修改角色",
-            area: '450px',
-            offset: '120px',
+            area:[($(window).width() * 0.9),($(window).height() - 50)],
+            title: data == null ? "添加用户" : "修改用户",
             content: $("#addModel").html()
         });
-        $("#editForm")[0].reset();
-        $("#editForm").attr("method", "POST");
+        $("#user_form")[0].reset();
+        $("#user_form").attr("method", "POST");
         if (data != null) {
-            $("#editForm input[name=roleId]").val(data.roleId);
-            $("#editForm input[name=roleName]").val(data.roleName);
-            $("#editForm textarea[name=comments]").val(data.comments);
+            $("#user_form input[name=username]").val(data.name);
+            $("#user_form input[name=phone]").val(data.tel);
+            // $("#user_form textarea[name=comments]").val(data.comments);
             $("#editForm").attr("method", "PUT");
         }
         $("#btnCancel").click(function () {
             layer.closeAll('page');
+        });
+        getRoles();
+
+        //自定义验证规则
+        form.verify({
+            name: function(value){
+                if(value.length < 5){
+                    return '昵称至少得5个字符啊';
+                }
+            }
+            ,pass: [/(.+){6,12}$/, '密码必须6到12位']
+            ,repass: function(value){
+                if($('#password').val()!=$('#L_repass').val()){
+                    return '两次密码不一致';
+                }
+            }
         });
     };
 
@@ -78,18 +94,40 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
         // data.field.token = getToken();
         data.field._method = $("#editForm").attr("method");
         layer.load(1);
-        $.post("/role/add_role", data.field, function(data){
+        $.post("/user/add_user", data.field, function(data){
             layer.closeAll('loading');
             if(data.code==0){
                 layer.alert("增加成功", {icon: 6});
                 layer.closeAll('page');
-                layui.table.reload('test', {});
+                layui.table.reload('users', {});
             }else{
                 layer.msg(data.msg,{icon: 2});
             }
         }, "JSON");
         return false;
     });
+
+
+    //获取所有角色
+    var roles = null;
+    function getRoles(){
+        if(roles!=null) {
+            layui.laytpl(rolesSelect.innerHTML).render(roles, function(html){
+                $("#role-select").html(html);
+
+                layui.form.render('select');
+                layer.closeAll('loading');
+            });
+        }else{
+            layer.load(1);
+            $.get("/role/findAll", function(data){
+                if(0==data.code){
+                    roles = data.data;
+                    getRoles();
+                }
+            });
+        }
+    }
 
     //输出test接口
     exports('role', {});

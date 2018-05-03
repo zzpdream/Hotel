@@ -6,10 +6,14 @@ import com.zzpdream.hotel.entity.ReturnData;
 import com.zzpdream.hotel.entity.Role;
 import com.zzpdream.hotel.entity.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -35,6 +39,28 @@ public class RoleController {
         try {
             roleDao.save(new Role(rolename));
             data = new ReturnData(0, "", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            data = new ReturnData(1, e.getMessage(), null);
+        }
+        return data;
+    }
+
+    @ResponseBody
+    @PostMapping("/delete_role")
+    public ReturnData deleteRole(@RequestBody Role[] roles) {
+        ReturnData data;
+        try {
+//            String[] idList = ids.replace(" ", "").split(",");
+            if (roles!=null&&roles.length > 0) {
+                for (Role role : roles) {
+                    roleDao.delete(role);
+                }
+                data = new ReturnData(0, "", null);
+            } else {
+                data = new ReturnData(1, "传入数据错误", null);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             data = new ReturnData(1, e.getMessage(), null);

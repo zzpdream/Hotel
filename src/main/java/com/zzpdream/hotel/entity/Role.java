@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(name="t_role")
-public class Role implements Serializable {
+public class Role{
     @Id
     @GeneratedValue
     @Column(name = "role_id")
