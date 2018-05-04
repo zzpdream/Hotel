@@ -10,8 +10,9 @@
 
 <body>
 <div class="weadmin-block">
-    <button  class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+    <button  class="layui-btn layui-btn-danger" id="deleteBtn"><i class="layui-icon"></i>批量删除</button>
     <button  class="layui-btn" id="addUserBtn"><i class="layui-icon"></i>添加</button>
+    <button  class="layui-btn" id="updateUserBtn"><i class="layui-icon"></i>修改</button>
 </div>
 
 
@@ -74,7 +75,7 @@
             </div>
             <div class="layui-form-item">
                 <label for="L_repass" class="layui-form-label"></label>
-                <button  class="layui-btn" lay-filter="add" lay-submit="">增加</button>
+                <button  class="layui-btn" lay-filter="add" lay-submit="">保存</button>
             </div>
         </form>
     </div>
