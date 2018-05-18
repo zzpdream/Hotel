@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>用户管理</title>
+    <link rel="stylesheet" href="../plugins/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../css/app.css" media="all">
+</head>
+
+<body>
+<div class="weadmin-block">
+    <button class="layui-btn layui-btn-danger" id="delete"><i class="layui-icon"></i>批量删除</button>
+    <button class="layui-btn" id="addBtn"><i class="layui-icon"></i>添加</button>
+</div>
+
+<table class="layui-hide" id="test"></table>
+
+<!-- 表单弹窗 -->
+<script type="text/html" id="addModel">
+    <div style="padding: 20px">
+        <form class="layui-form" id="editForm">
+            <div class="layui-form-item">
+                <label for="subject" class="layui-form-label">
+                    <span class="we-red">*</span>会议主题
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="subject" name="subject" required="" lay-verify="required"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="place" class="layui-form-label">
+                    <span class="we-red">*</span>会议地点
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="place" name="place" required="" lay-verify="required"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="beginTime" class="layui-form-label">
+                    <span class="we-red">*</span>会议时间
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="beginTime" name="beginTime"  class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="remark" class="layui-form-label">
+                    <span class="we-red">*</span>备注
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="remark" name="remark" required="" lay-verify="required"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="subject" class="layui-form-label"></label>
+                <button class="layui-btn" lay-filter="add" lay-submit="">增加</button>
+            </div>
+        </form>
+    </div>
+
+</script>
+
+<script src="../plugins/layui/layui.js"></script>
+<script src="../js/meeting.js"></script>
+<!--<script>-->
+<!--layui.config({-->
+<!--base: '../js/'-->
+<!--}).use(['laydate', 'jquery', 'admin','table','role'], function () {-->
+<!--var laydate = layui.laydate,-->
+<!--$ = layui.jquery,-->
+<!--admin = layui.admin;-->
+
+<!--window.delAll=function delAll(argument) {-->
+<!--var data = tableCheck.getData();-->
+<!--layer.confirm('确认要删除吗？' + data, function (index) {-->
+<!--//捉到所有被选中的，发异步进行删除-->
+<!--layer.msg('删除成功', {-->
+<!--icon: 1-->
+<!--});-->
+<!--$(".layui-form-checked").not('.header').parents('tr').remove();-->
+<!--});-->
+<!--}-->
+<!--});-->
+<!--</script>-->
+</body>
+
+</html>
