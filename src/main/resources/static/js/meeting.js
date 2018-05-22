@@ -15,14 +15,28 @@ layui.define(['jquery', 'form', 'layer', 'table','laydate'], function (exports) 
                 {type: 'checkbox'},
                 {type: 'numbers', width : 100, sort: true, title: '编号'},
                 // {field: 'id', minWidth : 280, sort: true, title: '角色名'},
-                {field: 'subject', minWidth : 280, sort: true, title: '会议主题'},
+                {field: 'subject', minWidth : 280, sort: true, title: '会议主题',
+                    // templet: '<div><a href="../views/meet_detail.html?{{d.id}}" class="layui-table-link">{{d.subject}}</a></div>'},
+                    templet: '<div><a href="javaxcript:;" data-id={{d.id}} class="layui-table-link jump-class">{{d.subject}}</a></div>'},
                 {field: 'beginTime', minWidth : 280, sort: true, title: '会议时间'},
                 {field: 'place', minWidth : 280, sort: true, title: '会议地点'},
                 {field: 'remark', minWidth : 280, sort: true, title: '备注'}
-            ]]
+            ]],
+            done:function () {
+                $(this.elem).next().find('.jump-class').off('click').on('click', function(){
+                    var _that = $(this),
+                        _data = {
+                            title: "1",
+                            id: "8",
+                            url:"../views/meet_detail.html"
+                        };
+                    parent.tab.tabAdd(_data);
+                });
+            }
         });
 
     });
+
 
     //添加按钮点击事件
     $("#addBtn").click(function(){
