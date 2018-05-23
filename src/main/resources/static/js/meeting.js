@@ -1,9 +1,10 @@
-layui.define(['jquery', 'form', 'layer', 'table','laydate'], function (exports) {
+layui.define(['jquery', 'form', 'layer', 'table', 'laydate'], function (exports) {
     var $ = layui.jquery,
         form = layui.form,
         layer = layui.layer,
         table = layui.table;
     var laydate = layui.laydate;
+
 
     $(function () {
         //渲染表格
@@ -13,22 +14,25 @@ layui.define(['jquery', 'form', 'layer', 'table','laydate'], function (exports) 
             page: false,
             cols: [[
                 {type: 'checkbox'},
-                {type: 'numbers', width : 100, sort: true, title: '编号'},
+                {type: 'numbers', width: 100, sort: true, title: '编号'},
                 // {field: 'id', minWidth : 280, sort: true, title: '角色名'},
-                {field: 'subject', minWidth : 280, sort: true, title: '会议主题',
-                    // templet: '<div><a href="../views/meet_detail.html?{{d.id}}" class="layui-table-link">{{d.subject}}</a></div>'},
-                    templet: '<div><a href="javaxcript:;" data-id={{d.id}} class="layui-table-link jump-class">{{d.subject}}</a></div>'},
-                {field: 'beginTime', minWidth : 280, sort: true, title: '会议时间'},
-                {field: 'place', minWidth : 280, sort: true, title: '会议地点'},
-                {field: 'remark', minWidth : 280, sort: true, title: '备注'}
+                {
+                    field: 'subject', minWidth: 280, sort: true, title: '会议主题',
+                    templet: '<div><a href="../views/meet_detail.html?id="+{{d.id}} class="layui-table-link">{{d.subject}}</a></div>'},
+                    // templet: '<div><a href="javaxcript:;" data-id={{d.id}} class="layui-table-link jump-class">{{d.subject}}</a></div>'
+                // },
+                {field: 'beginTime', minWidth: 280, sort: true, title: '会议时间'},
+                {field: 'place', minWidth: 280, sort: true, title: '会议地点'},
+                {field: 'remark', minWidth: 280, sort: true, title: '备注'}
             ]],
-            done:function () {
-                $(this.elem).next().find('.jump-class').off('click').on('click', function(){
+            done: function () {
+                $(this.elem).next().find('.jump-class').off('click').on('click', function () {
                     var _that = $(this),
                         _data = {
-                            title: "1",
-                            id: "8",
-                            url:"../views/meet_detail.html"
+                            title: "议程管理",
+                            icon: "fa-edit",
+                            id: "99",
+                            url: "../views/meet_detail.html" + "?" + _that.data('id')
                         };
                     parent.tab.tabAdd(_data);
                 });
@@ -39,28 +43,28 @@ layui.define(['jquery', 'form', 'layer', 'table','laydate'], function (exports) 
 
 
     //添加按钮点击事件
-    $("#addBtn").click(function(){
+    $("#addBtn").click(function () {
         showEditModel(null);
     });
 
     //添加按钮点击事件
-    $("#delete").click(function(){
+    $("#delete").click(function () {
         var checkStatus = table.checkStatus('test')
-            ,data = checkStatus.data;
+            , data = checkStatus.data;
         layer.confirm('确认要删除吗？', function () {
             //捉到所有被选中的，发异步进行删除
             $.post({
                 url: '/meet/delete',
-                data:JSON.stringify(data),
-                contentType:"application/json",
-                dataType:"json",
-                success: function(data) {
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                dataType: "json",
+                success: function (data) {
                     if (data.code == 0) {
                         layer.alert("删除成功", {icon: 6});
                         layer.closeAll('page');
                         layui.table.reload('test', {});
                     } else {
-                        layer.msg(data.msg,{icon: 2});
+                        layer.msg(data.msg, {icon: 2});
                     }
                 }
             });
@@ -96,23 +100,23 @@ layui.define(['jquery', 'form', 'layer', 'table','laydate'], function (exports) 
     };
 
     //表单提交事件
-    layui.form.on('submit(add)', function(data){
+    layui.form.on('submit(add)', function (data) {
         // data.field.token = getToken();
         data.field._method = $("#editForm").attr("method");
         layer.load(1);
-        $.post("/meet/add", data.field, function(data){
+        $.post("/meet/add", data.field, function (data) {
             layer.closeAll('loading');
-            if(data.code==0){
+            if (data.code == 0) {
                 layer.alert("增加成功", {icon: 6});
                 layer.closeAll('page');
                 layui.table.reload('test', {});
-            }else{
-                layer.msg(data.msg,{icon: 2});
+            } else {
+                layer.msg(data.msg, {icon: 2});
             }
         }, "JSON");
         return false;
     });
 
     //输出test接口
-    exports('role', {});
+    exports('meeting', {});
 });
