@@ -18,9 +18,9 @@ layui.define(['jquery', 'form', 'layer', 'table', 'laydate'], function (exports)
                 // {field: 'id', minWidth : 280, sort: true, title: '角色名'},
                 {
                     field: 'subject', minWidth: 280, sort: true, title: '会议主题',
-                    templet: '<div><a href="../views/meet_detail.html?id="+{{d.id}} class="layui-table-link">{{d.subject}}</a></div>'},
-                    // templet: '<div><a href="javaxcript:;" data-id={{d.id}} class="layui-table-link jump-class">{{d.subject}}</a></div>'
-                // },
+                    // templet: '<div><a href="../views/meet_detail.html?id={{d.id}}" class="layui-table-link">{{d.subject}}</a></div>'},
+                    templet: '<div><a href="javaxcript:;" data-id={{d.id}} class="layui-table-link jump-class">{{d.subject}}</a></div>'
+                },
                 {field: 'beginTime', minWidth: 280, sort: true, title: '会议时间'},
                 {field: 'place', minWidth: 280, sort: true, title: '会议地点'},
                 {field: 'remark', minWidth: 280, sort: true, title: '备注'}
@@ -34,6 +34,7 @@ layui.define(['jquery', 'form', 'layer', 'table', 'laydate'], function (exports)
                             id: "99",
                             url: "../views/meet_detail.html" + "?" + _that.data('id')
                         };
+                    parent.tab.close(99);
                     parent.tab.tabAdd(_data);
                 });
             }

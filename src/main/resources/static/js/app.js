@@ -75,8 +75,7 @@ layui.define(['element', 'nprogress', 'form', 'table', 'loader', 'tab', 'navbar'
                     //openWait: false,
                     elem: '#container',
                     onSwitch: function(data) { //选项卡切换时触发
-                        if(data.layId==99){
-                        }
+
                         //console.log(data.layId); //lay-id值
                         //console.log(data.index); //得到当前Tab的所在下标
                         //console.log(data.elem); //得到当前的Tab大容器
