@@ -1,22 +1,31 @@
 package com.zzpdream.hotel.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name="t_meet")
-public class Meet {
+@Table(name="t_agenda")
+public class Agenda {
     @Id
     @GeneratedValue
-    @Column(name = "meet_id")
+    @Column(name = "agenda_id")
     private Integer id;
+
     @Column(length = 100)
-    private String subject;
+    private String content;
     @Column(length = 100)
     private String beginTime;
     @Column(length = 100)
     private String place;
     @Column(length = 100)
     private String remark;
+    @Column(name = "meet_id")
+    private Integer meetId;
+
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "agenda_id")
+    private List<AttachFiles> files=new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -26,12 +35,12 @@ public class Meet {
         this.id = id;
     }
 
-    public String getSubject() {
-        return subject;
+    public String getContent() {
+        return content;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getBeginTime() {
@@ -56,5 +65,21 @@ public class Meet {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public List<AttachFiles> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<AttachFiles> files) {
+        this.files = files;
+    }
+
+    public Integer getMeetId() {
+        return meetId;
+    }
+
+    public void setMeetId(Integer meetId) {
+        this.meetId = meetId;
     }
 }

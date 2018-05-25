@@ -32,7 +32,7 @@ layui.define(['jquery', 'form', 'layer', 'table', 'laydate'], function (exports)
                             title: "议程管理",
                             icon: "fa-edit",
                             id: "99",
-                            url: "../views/meet_detail.html" + "?" + _that.data('id')
+                            url: "../views/meet_detail.html" + "?id=" + _that.data('id')
                         };
                     parent.tab.close(99);
                     parent.tab.tabAdd(_data);
