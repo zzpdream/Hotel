@@ -1,18 +1,16 @@
-layui.define(['jquery', 'form', 'layer', 'table', 'laydate', 'upload'], function (exports) {
+layui.define(['jquery', 'form', 'layer', 'table', 'upload'], function (exports) {
     var $ = layui.jquery,
         form = layui.form,
         layer = layui.layer,
         table = layui.table,
         upload = layui.upload;
-    var laydate = layui.laydate;
-    var meetId;
 
     $(function () {
         meetId = getQueryString("id");
         console.log(meetId)
         //渲染表格
         table.render({
-            elem: '#test',
+            elem: '#apkUpdateList',
             url: '/agenda/findById/' + meetId,
             page: false,
             cols: [[
@@ -29,29 +27,7 @@ layui.define(['jquery', 'form', 'layer', 'table', 'laydate', 'upload'], function
         });
     });
 
-    //获取iframe 地址
-    function getIframeByElement(element) {
-        var iframe;
-        $("iframe", window.parent.document).each(function () {
-            if (element.ownerDocument === this.contentWindow.document) {
-                iframe = this;
-            }
-            return !iframe;
-        });
-        return iframe;
-    };
 
-    //通过正则表达式获取？号之后的参数
-    function getQueryString(name) {
-        var iframe = getIframeByElement(document.body);
-        var iframeObj = $(iframe);
-        var address = iframeObj.context.src.split("?");
-
-        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-        var r = address[1].match(reg);
-        if (r != null) return r[2];
-        return '';
-    };
 
     //添加按钮点击事件
     $("#addBtn").click(function () {
