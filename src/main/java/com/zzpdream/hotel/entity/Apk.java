@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class Apk {
     @Id
     @GeneratedValue
-    @Column(name = "agenda_id")
+    @Column(name = "id")
     private Integer id;
 
     @Column(length = 100)

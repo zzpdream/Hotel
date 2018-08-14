@@ -19,15 +19,20 @@
         <form class="layui-form" id="editForm" enctype="multipart/form-data">
 
             <div class="layui-form-item">
-                <label for="content" class="layui-form-label">
+                <label for="versionCode" class="layui-form-label">
                     <span class="we-red">*</span>VersionCode
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="content" name="content" required="" lay-verify="required"
+                    <input type="text" id="versionCode" name="versionCode" required="" lay-verify="required"
                            autocomplete="off" class="layui-input">
                 </div>
             </div>
-
+            <div class="layui-hide">
+                    <input type="text" id="url" name="url" class="layui-input">
+            </div>
+            <div class="layui-hide">
+                <input type="text" id="name" name="name" class="layui-input">
+            </div>
             <div class="layui-form-item">
                 <label for="addfile" class="layui-form-label">
                     <span class="we-red">*</span>议程附件
@@ -43,7 +48,7 @@
                 </div>
             </div>
             <div class="layui-form-item">
-                <label for="content" class="layui-form-label"></label>
+                <label for="versionCode" class="layui-form-label"></label>
                 <button class="layui-btn" lay-filter="add" lay-submit="">增加</button>
             </div>
         </form>

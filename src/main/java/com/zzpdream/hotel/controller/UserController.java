@@ -23,9 +23,14 @@ public class UserController {
     @ResponseBody
     @RequestMapping("/findAll")
     public ReturnData getAllUser() {
-        List users=userDao.findAll();
-        ReturnData data=new ReturnData<List<User>>(0, "",users );
-        data.count=users.size();
+        List users = userDao.findAll();
+        ReturnData data;
+        if (users != null && users.size() > 0) {
+            data = new ReturnData<List<User>>(0, "", users);
+            data.count = users.size();
+        } else {
+            data = new ReturnData(0, "数据为空", "");
+        }
         return data;
     }
 
@@ -44,15 +49,13 @@ public class UserController {
     }
 
 
-
-
     @ResponseBody
     @PostMapping("/delete_user")
     public ReturnData deleteUser(@RequestBody User[] users) {
         ReturnData data;
         try {
 //            String[] idList = ids.replace(" ", "").split(",");
-            if (users!=null&&users.length > 0) {
+            if (users != null && users.length > 0) {
                 for (User user : users) {
                     userDao.delete(user);
                 }

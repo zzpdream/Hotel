@@ -6,23 +6,19 @@ layui.define(['jquery', 'form', 'layer', 'table', 'upload'], function (exports) 
         upload = layui.upload;
 
     $(function () {
-        meetId = getQueryString("id");
-        console.log(meetId)
         //渲染表格
         table.render({
             elem: '#apkUpdateList',
-            url: '/agenda/findById/' + meetId,
+            url: '/apk/findAll',
             page: false,
             cols: [[
                 {type: 'checkbox'},
                 {type: 'numbers', width: 100, sort: true, title: '编号'},
-                // {field: 'id', minWidth : 280, sort: true, title: '角色名'},
+                {field: 'name', minWidth: 280, sort: true, title: '文件名',
+                    templet: '<div><a href="{{d.url}} " target="_blank" class="layui-table-link">{{d.name}}</a></div>'},
                 {
-                    field: 'content', minWidth: 280, sort: true, title: '议程内容'
-                },
-                {field: 'beginTime', minWidth: 280, sort: true, title: '议程时间'},
-                {field: 'files', minWidth: 280, sort: true, title: '议程附件'},
-                {field: 'remark', minWidth: 280, sort: true, title: '备注'}
+                    field: 'versionCode', minWidth: 280, sort: true, title: 'VerisonCode'
+                }
             ]]
         });
     });
@@ -36,12 +32,12 @@ layui.define(['jquery', 'form', 'layer', 'table', 'upload'], function (exports) 
 
     //添加按钮点击事件
     $("#delete").click(function () {
-        var checkStatus = table.checkStatus('test')
+        var checkStatus = table.checkStatus('apkUpdateList')
             , data = checkStatus.data;
         layer.confirm('确认要删除吗？', function () {
             //捉到所有被选中的，发异步进行删除
             $.post({
-                url: '/agenda/delete',
+                url: '/apk/delete',
                 data: JSON.stringify(data),
                 contentType: "application/json",
                 dataType: "json",
@@ -49,7 +45,7 @@ layui.define(['jquery', 'form', 'layer', 'table', 'upload'], function (exports) 
                     if (data.code == 0) {
                         layer.alert("删除成功", {icon: 6});
                         layer.closeAll('page');
-                        layui.table.reload('test', {});
+                        layui.table.reload('apkUpdateList', {});
                     } else {
                         layer.msg(data.msg, {icon: 2});
                     }
@@ -65,7 +61,7 @@ layui.define(['jquery', 'form', 'layer', 'table', 'upload'], function (exports) 
     function showEditModel(data) {
         layer.open({
             type: 1,
-            title: data == null ? "添加议程" : "修改议程",
+            title: data == null ? "添加apk" : "修改议程",
             area: '450px',
             offset: '120px',
             content: $("#addModel").html()
@@ -73,33 +69,31 @@ layui.define(['jquery', 'form', 'layer', 'table', 'upload'], function (exports) 
 
         upload.render({
             elem: '#addfile'
-            ,url: '/agenda/uploadfile/',
+            ,url: '/apk/uploadapk/',
             field: 'file'
             ,done: function(res, index, upload){ //上传后的回调
                 if(res.code==0){
                     layer.msg("上传成功");
-                    $("#pdfFileList").append('<div><a class="filename" data-title=' + res.fileName
-                        + ' data-url=' + res.url + ' href=' + res.url + '>' + res.fileName
+                    $("#pdfFileList").append('<div><a class="filename" data-title=' + res.name
+                        + ' data-url=' + res.url + ' href=' + res.url + '>' + res.name
                         + '</a>&nbsp;<a class="btn red del_file">删除</a>&nbsp;&nbsp;</div>');
+                    $("#url").val(res.url);
+                    $("#name").val(res.name);
                 }else{
                     layer.msg(res.msg);
                 }
 
             }
-            //,accept: 'file' //允许上传的文件类型
+            ,accept: 'file' //允许上传的文件类型
             //,size: 50 //最大允许上传的文件大小
             //,……
         });
 
         $("#editForm")[0].reset();
         $("#editForm").attr("method", "POST");
-        $("#editForm input[name=meetId]").val(meetId);
 
         $("#btnCancel").click(function () {
             layer.closeAll('page');
-        });
-        laydate.render({
-            elem: '#beginTime' //指定元素
         });
     };
 
@@ -109,12 +103,12 @@ layui.define(['jquery', 'form', 'layer', 'table', 'upload'], function (exports) 
         data.field._method = $("#editForm").attr("method");
         layer.load(1);
         console.log(data.field);
-        $.post("/agenda/add", data.field, function (data) {
+        $.post("/apk/add", data.field, function (data) {
             layer.closeAll('loading');
             if (data.code == 0) {
                 layer.alert("增加成功", {icon: 6});
                 layer.closeAll('page');
-                layui.table.reload('test', {});
+                layui.table.reload('apkUpdateList', {});
             } else {
                 layer.msg(data.msg, {icon: 2});
             }
