@@ -16,13 +16,13 @@ public class LoginController {
     @Resource
     private UserDao userDao;
 
-    @RequestMapping("/")
+    @RequestMapping("/login")
     public String index(){
         return "login";
 //        return "redirect:/login.html";
     }
 
-    @PostMapping("/login")
+    @PostMapping("api/login")
     @ResponseBody
     public ReturnData login(User user){
         System.out.println("username:"+user.getName()+" password:"+user.getPassword());

@@ -23,11 +23,11 @@ public class Order {
     private String orderRoomName;
 
     @Column(name = "beginTime")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date beginTime;
 
     @Column(name = "endTime")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date endTime;
 
     public Order(String orderName, Integer orderPrice, String orderTel, Integer orderRoomId, String orderRoomName, Date beginTime, Date endTime) {

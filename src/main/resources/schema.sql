@@ -1,0 +1,1 @@
+Create Database If Not Exists db_hotel Character Set UTF8
