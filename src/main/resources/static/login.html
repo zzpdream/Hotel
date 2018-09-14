@@ -17,12 +17,12 @@
       <h2 class="kit-login-slogan">欢迎使用 <br> 无拘无束后台管理系统</h2>
       <div class="kit-login-form">
         <h4 class="kit-login-title">登录</h4>
-        <form class="layui-form">
+        <form class="layui-form" action="/hotel/login" method="post">
           <div class="kit-login-row">
             <div class="kit-login-col">
               <i class="layui-icon">&#xe612;</i>
               <span class="kit-login-input">
-                <input type="text" name="name" lay-verify="required" placeholder="用户名/邮箱/手机号" />
+                <input type="text" name="username" lay-verify="required" placeholder="用户名/邮箱/手机号" />
               </span>
             </div>
             <div class="kit-login-col"></div>
@@ -63,39 +63,6 @@
         layer.msg('请联系管理员.');
       });
       //监听提交
-      form.on('submit(login_hash)', function(senddata) {
-          layer.load(1);
-
-          var timeout=setTimeout(function(){
-                  layer.closeAll('loading');
-                  layer.msg("请求超时");
-              },
-              5000 //超时时间，考虑到网络问题，5秒还是比较合理的
-          );
-
-          $.post({
-              url: 'hotel/api/login',
-              data:senddata.field,
-              dataType:"json",
-              if(timeout){
-                  clearTimeout(timeout);
-                  timeout=null;
-              },
-              success: function(data) {
-                  clearTimeout(timeout);
-                  timeout=null;
-                  if (data.code == 0) {
-                      layer.msg(data.msg,{icon: 1});
-                      location.replace("main.html")
-                  } else {
-                      layer.closeAll('loading');
-                      layer.msg(data.msg,{icon: 2});
-                  }
-              }
-          });
-
-        return false;
-      });
     });
   </script>
 </body>

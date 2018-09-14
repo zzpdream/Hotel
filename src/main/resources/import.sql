@@ -3,7 +3,7 @@
 
 INSERT INTO t_role(role_id,name)VALUES(1,'超级管理员');
 
-INSERT INTO t_user(id,name,password,rolename,role_id)VALUES(1,'admin','123456','超级管理员',1);
+INSERT INTO t_user(id,name,password,rolename,role_id)VALUES(1,'admin','539f6da5604377ce12d2b81e257d6e2d','超级管理员',1);
 
 
 INSERT INTO t_room(id,name,img,info,price)VALUES(1,'缥缈晴岚','https://zzpdream.xyz/rooms/DSC_3756.jpg','Loft顶级套房. 5.0米视觉冲击实木背景. 1.6m圆形超大平躺浴缸.纯白枫木独立旋转楼梯.二层平台日式修行榻榻米.后山VIP超大观景阳台.',1280);
