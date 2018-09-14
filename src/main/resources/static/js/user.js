@@ -8,7 +8,7 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
         //渲染表格
         table.render({
             elem: '#users',
-            url: '/user/findAll',
+            url: '/hotel/user/findAll',
             page: false,
             cols: [[
                 {type: 'checkbox'},
@@ -38,7 +38,7 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
         layer.confirm('确认要删除吗？', function () {
             //捉到所有被选中的，发异步进行删除
             $.post({
-                url: '/user/delete_user',
+                url: '/hotel/user/delete_user',
                 data: JSON.stringify(data),
                 contentType: "application/json",
                 dataType: "json",
@@ -108,7 +108,7 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
         layer.confirm('确认要删除吗？', function () {
             //捉到所有被选中的，发异步进行删除
             $.post({
-                url: '/user/delete_user',
+                url: '/hotel/user/delete_user',
                 data: JSON.stringify(data),
                 contentType: "application/json",
                 dataType: "json",
@@ -133,7 +133,7 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
         // data.field.token = getToken();
         data.field._method = $("#editForm").attr("method");
         layer.load(1);
-        $.post("/user/add_user", data.field, function (data) {
+        $.post("/hotel/user/add_user", data.field, function (data) {
             layer.closeAll('loading');
             if (data.code == 0) {
                 layer.alert("增加成功", {icon: 6});
@@ -160,7 +160,7 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
             });
         } else {
             layer.load(1);
-            $.get("/role/findAll", function (data) {
+            $.get("/hotel/role/findAll", function (data) {
                 if (0 == data.code) {
                     roles = data.data;
                     getRoles();

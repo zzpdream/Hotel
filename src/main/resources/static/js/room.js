@@ -8,7 +8,7 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
         //渲染表格
         table.render({
             elem: '#rooms',
-            url: '/room/findAll',
+            url: '/hotel/room/findAll',
             page: false,
             cols: [[
                 {type: 'checkbox'},

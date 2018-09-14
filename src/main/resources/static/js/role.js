@@ -8,7 +8,7 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
         //渲染表格
         table.render({
             elem: '#test',
-            url: '/role/findAll',
+            url: '/hotel/role/findAll',
             page: false,
             cols: [[
                 {type: 'checkbox'},
@@ -31,7 +31,7 @@ layui.define(['jquery', 'form', 'layer', 'table'], function (exports) {
         layer.confirm('确认要删除吗？', function () {
             //捉到所有被选中的，发异步进行删除
             $.post({
-                url: '/role/delete_role',
+                url: '/hotel/role/delete_role',
                 data:JSON.stringify(data),
                 contentType:"application/json",
                 dataType:"json",
