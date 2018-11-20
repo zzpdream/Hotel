@@ -45,6 +45,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .headers().frameOptions().disable().and()
+                .rememberMe().tokenValiditySeconds(1209600)
+                //指定记住登录信息所使用的数据源
+                .and()//code4.and()
                 .csrf().disable();
     }
 

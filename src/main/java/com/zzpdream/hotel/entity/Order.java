@@ -19,8 +19,8 @@ public class Order {
     @Column(length = 20)
     private Integer orderRoomId;
 
-    @Column(length = 20)
-    private String orderRoomName;
+//    @Column(length = 20)
+//    private String orderRoomName;
 
     @Column(name = "beginTime")
     @Temporal(TemporalType.TIMESTAMP)
@@ -35,7 +35,7 @@ public class Order {
         this.orderPrice = orderPrice;
         this.orderTel = orderTel;
         this.orderRoomId = orderRoomId;
-        this.orderRoomName = orderRoomName;
+//        this.orderRoomName = orderRoomName;
         this.beginTime = beginTime;
         this.endTime = endTime;
     }
@@ -99,11 +99,11 @@ public class Order {
         this.orderRoomId = orderRoomId;
     }
 
-    public String getOrderRoomName() {
-        return orderRoomName;
-    }
-
-    public void setOrderRoomName(String orderRoomName) {
-        this.orderRoomName = orderRoomName;
-    }
+//    public String getOrderRoomName() {
+//        return orderRoomName;
+//    }
+//
+//    public void setOrderRoomName(String orderRoomName) {
+//        this.orderRoomName = orderRoomName;
+//    }
 }
